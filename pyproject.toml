@@ -1,0 +1,9 @@
+[project]
+name = "ai-engineering"
+version = "0.1.0"
+description = "AI Engineering from scratch — YouTube series companion code"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "openai>=2.38.0",
+]
