@@ -19,7 +19,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="gemini-2.0-flash",
+    model="gemini-2.5-flash",
     messages=[
         {"role": "system", "content": "You are a helpful AI tutor."},
         {"role": "user", "content": "In one sentence, what is an LLM?"},

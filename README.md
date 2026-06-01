@@ -21,8 +21,8 @@ uv sync
 # 3. Add your Gemini key
 cp .env.template .env          # then open .env and paste your key
 
-# 4. Run the first call
-uv run --env-file .env first_call.py
+# 4. Run the first episode
+uv run --env-file .env episodes/01_first_call.py
 ```
 
 > Use `uv sync`, **not** `uv init` — `sync` installs the pinned dependencies from
