@@ -26,3 +26,22 @@ for model in ["gemini/gemini-2.5-flash", "groq/llama-3.3-70b-versatile"]:
         messages=[{"role": "user", "content": question}],
     )
     print(f"{model}:\n  {response.choices[0].message.content}\n")
+
+
+# ---------------------------------------------------------------------------
+# Don't want to host a gateway yourself? A hosted service like OpenRouter does
+# the same job — one endpoint, 100+ models, they hold the keys and the billing.
+# It's the same OpenAI-compatible idea: the EXACT client above, just pointed at
+# their URL instead of ours. (Free key: https://openrouter.ai/keys)
+#
+#     client = OpenAI(
+#         api_key="sk-or-...",                      # your OpenRouter key
+#         base_url="https://openrouter.ai/api/v1",  # instead of our gateway
+#     )
+#     client.chat.completions.create(
+#         model="google/gemini-2.5-flash",          # OpenRouter's model names
+#         messages=[{"role": "user", "content": question}],
+#     )
+#
+# Your own gateway = control + cost. OpenRouter = convenience. Same shape.
+# ---------------------------------------------------------------------------
