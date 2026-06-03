@@ -25,7 +25,7 @@ from pydantic import BaseModel
 client = OpenAI(api_key="not-needed", base_url="http://127.0.0.1:8000/v1")
 
 MODEL = "gemini/gemini-2.5-flash"
-SENTENCE = "Ada Lovelace, 36, is a mathematician from London."
+SENTENCE = "Peter Parker, 36, is a mathematician from London."
 
 
 # 1) THE NAIVE WAY — just ask, and hope.
