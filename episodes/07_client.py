@@ -11,12 +11,14 @@ The model can't know either answer on its own. It picks the right tool (or both)
 based on the question.
 
 The agent loop (this is the whole "agent" idea, minus the buzzword):
-  while True:
+  repeat, up to MAX_STEPS times:
     1) send the conversation + the tools we offer
     2) did the model ask to call a tool?
          no  -> it answered. print it and STOP.
          yes -> run each requested function, append the results, and loop again.
-The model keeps the loop going until it has everything it needs to answer.
+The model keeps the loop going until it has everything it needs to answer. The
+MAX_STEPS cap is the safety belt: never let a tool loop run (and bill) forever
+if the model keeps asking or a tool keeps failing.
 
 Start the gateway first (in another terminal):
     uv run --env-file .env python episodes/07_gateway.py
@@ -84,8 +86,10 @@ TOOLS = [
 messages = [{"role": "user", "content":
              "What's the weather in Tokyo right now, and what's the status of order A1023?"}]
 
-# THE AGENT LOOP — keep going until the model stops asking for tools.
-while True:
+MAX_STEPS = 5  # safety belt: never let the tool loop run (and bill) forever.
+
+# THE AGENT LOOP — keep going until the model stops asking for tools, or we hit the cap.
+for step in range(MAX_STEPS):
     resp = client.chat.completions.create(model=MODEL, messages=messages, tools=TOOLS)
     msg = resp.choices[0].message
 
@@ -104,3 +108,7 @@ while True:
         messages.append({"role": "tool", "tool_call_id": tc.id,
                          "content": json.dumps(result)})
     # loop again: send the tool results back so the model can use them.
+else:
+    # for/else: this runs only if we never hit `break` — i.e. we used up every
+    # step and the model was STILL asking for tools. Bail out instead of looping.
+    print(f"\n⚠️  gave up after {MAX_STEPS} tool-calling rounds — no final answer.")
